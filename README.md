@@ -24,6 +24,7 @@
 ### 1.1) Introduction
 This is a FastAPI application built in Python to generate random short URLs for given long URLs. Designed to handle concurrent operations of multiple workers with high availability by enqueuing jobs into Redis cache.
 
+---
 
 ### 1.2) Approach for generating unique Short URL:
 The code for generating random Short Code is present at 'utils/utils.py'. Here, we are generating the code of length at-least 1 and at-max 5. For generating each character, we can use the set containing characters from 0-9, a-z and A-Z. Thus, we have 62 choices to fill each character. Thus, 
@@ -34,12 +35,14 @@ The code for generating random Short Code is present at 'utils/utils.py'. Here, 
 Thus, our logic is capable of supporting around 930 million URLs.
 Note that the random generator is prone to collision, meaning it can produce the short code that has already been in use for some other Long URL. Thus, we will keep on generating the Short code until we find that such short code that has not been in use till now.
 
+---
 
 ### 1.3) Functional Requirements
 To build a backend application powered by FastAPI supporting the following operations:
 1. **URL Shortening**: Given a long URL, return a much shorter URL.
 2. **URL Redirecting**: Given a shorter URL, redirect to the original URL.
 
+---
 
 ### 1.4) Core Requirements
 #### a) Data Persistence Across Instances
@@ -52,6 +55,7 @@ For scalability, the application can run on multiple workers, easily adjustable 
 #### d) High Availability
 High availability is ensured as FastAPI instances enqueue jobs into Celery without waiting for completion, allowing each instance to accept new requests without delay. A unique job ID is returned to the client to track progress, ensuring high responsiveness and the ability to handle high request volumes efficiently.
 
+---
 
 ### 1.5) Additional Functionalities
 #### a) Custom Short URLs
@@ -61,6 +65,7 @@ An expiration mechanism allows users to set a time duration (in seconds) after w
 #### c) Rate Limiting
 To prevent abuse, URL shortening requests are limited to a maximum of 10 requests per user or IP address within a 1-minute period, ensuring fair resource use and consistent service quality.
 
+---
 
 ### 1.6) API Specifications
 **a) POST /url/shorten:** This endpoint enqueues the job of generating a shortened URL into Redis for Celery to process. It accepts 3 parameters in its body: 
@@ -89,6 +94,7 @@ You need to specify one out of the 2 to delete that specific mapping. Again, thi
    9) **Completed (404 Not Found):** It conveys completion of the job of deleting a mapping of Long URL to Short Code both in the Memcache and MongoDB database. No such record to be deleted was found in the database.
       
 ---
+---
 
 
 ## 2) Setting Up the Project on Windows Local System
@@ -99,6 +105,8 @@ You need to specify one out of the 2 to delete that specific mapping. Again, thi
 3. Create a `.env` file in the root directory of this cloned project, with the following: MONGODB_USERNAME=`Your username` MONGODB_PASSWORD=`Your password`
 4. Set the `uri` variable in './config/database.py' to the connection string of your cluster.
 
+---
+
 ### 2.2) Setting up the Virtual Environment
 1. Open CMD and navigate to the project directory.
 2. Create a virtual environment by running: `python -m venv myvenv`
@@ -106,6 +114,7 @@ You need to specify one out of the 2 to delete that specific mapping. Again, thi
 4. Install the required packages with: `pip install -r requirements.txt`
 5. Close CMD.
 
+---
 ---
 
 ## 3) Running the Project on Windows Local System
@@ -117,9 +126,13 @@ You need to specify one out of the 2 to delete that specific mapping. Again, thi
 4. Start Redis with: `docker run -d --name redis -p 6379:6379 redis:latest`
 5. If issues arise, start services directly via Docker Desktop App GUI.
 
+---
+
 ### 3.2) Starting the Celery Worker
 1. Open CMD in the root directory and run: `celery -A worker.celery_worker.celery_app worker --loglevel=info --pool=solo`
-   
+
+---
+
 ### 3.3) Running the Main FastAPI Application
 1. Open CMD in the root directory.
 2. Activate the virtual environment with: `myvenv\Scripts\activate`
