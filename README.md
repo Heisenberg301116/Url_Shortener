@@ -17,6 +17,7 @@
    - [Running the Main FastAPI Application](#33-running-the-main-fastapi-application)
 
 ---
+---
 
 ## 1) Project Overview
 
@@ -76,9 +77,9 @@ The above endpoint will return the task_id. Based of this task_id we can check t
    2) **long_url**: The given Long URL whose mapping you want to delete.
 You need to specify one out of the 2 to delete that specific mapping. Again, this endpoint returns task_id.
 
-**d) GET /{task_id}:** This endpoint is used to track the status of the given task_id. Based upn the nature of the job corresponding to this task_id, it returns one out of the following responses:
-   1) **Pending (200 OK):** If the given job is still waiting in the Redis queue to get processed.
-   2) **Failure (500 Internal Server Error):** When a job encounters an error during execution.
+**d) GET /{task_id}:** This endpoint is used to track the status of the given task_id. Based upon the nature of the job corresponding to this task_id, it returns one out of the following responses:
+   1) **Pending (200 OK):** It signifies that the given job is still waiting in the Redis queue to get processed.
+   2) **Failure (500 Internal Server Error):** It signifies that the job encountered an error during execution.
    3) **Completed (404 Not Found):** It tells that the job of fetching Long URL from Short Code was completed and no such Short Code was present in the database.
    4) **Completed (302 Temporary Redirect):** It conveys completion of the job of fetching Long URL from Short Code and successfully finds the Long URL corresponding to the given Short Code and redirects to this Long URL.
    5) **Completed (201 Resource Created):** It conveys completion of the job of creating a Short URL from the given Long URL and returns that new Short URL in its response.
