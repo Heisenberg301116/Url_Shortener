@@ -26,9 +26,9 @@ This is a FastAPI application built in Python to generate random short URLs for 
 
 ### 1.2) Approach for generating unique Short URL:
 The code for generating random Short Code is present at 'utils/utils.py'. Here, we are generating the code of length at-least 1 and at-max 5. For generating each character, we can use the set containing characters from 0-9, a-z and A-Z. Thus, we have 62 choices to fill each character. Thus, 
-For a code of length 1, there are 62 permutations.
-For a code of length 2, there are 62*62 permutations.
-For a code of length 5, there are 62^5 permutations.
+- For a code of length 1, there are 62 permutations.
+- For a code of length 2, there are 62*62 permutations.
+- For a code of length 5, there are 62^5 permutations.
 
 Thus, our logic is capable of supporting around 930 million URLs.
 Note that the random generator is prone to collision, meaning it can produce the short code that has already been in use for some other Long URL. Thus, we will keep on generating the Short code until we find that such short code that has not been in use till now.
