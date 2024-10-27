@@ -13,7 +13,7 @@ from worker.celery_worker import process_short_code, process_long_url, process_d
 router = APIRouter()
 
 
-@router.post("/longurl")
+@router.post("/shorten")
 async def shorten_url(request: Request, url_mapping: UrlMappingSchema):
     user_id = request.client.host  # IP address of user
     
@@ -69,7 +69,7 @@ async def get_task_result(task_id: str):
     if result.state == "PENDING":
         return {"task_id": task_id, "status": "Pending..."}
     elif result.state == "FAILURE":
-        return {"task_id": task_id, "status": "Failed", "result": str(result.result)}
+        return JSONResponse(content={"task_id": task_id, "status": "Failed", "result": str(result.result)}, status_code=500)
     else:
         response = result.result  # Now this is a dict               
         
@@ -78,7 +78,7 @@ async def get_task_result(task_id: str):
                 return JSONResponse(content={"task_id": task_id, "status": "Completed", "result": "URL not found !"}, status_code=404)
                 
             else:
-                return RedirectResponse(url=response['long_url'], status_code=307)
+                return RedirectResponse(url=response['long_url'], status_code=302)
         
         
         

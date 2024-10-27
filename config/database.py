@@ -4,6 +4,7 @@ import os
 # from os import environ as env
 from dotenv import load_dotenv
 # Load environment variables from .env file
+dotenv_path = './env'
 load_dotenv()
 
 # Access the MongoDB URI using the environment variable

@@ -1,6 +1,6 @@
 import random
 
-MAX_LEN = 7
+MAX_LEN = 5
 DNS = "http://magic.Link"
 print("DNS:", DNS)
 
