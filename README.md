@@ -66,7 +66,7 @@ To prevent abuse, URL shortening requests are limited to a maximum of 10 request
    1) **long_url**: The URL that you want to shorten (Required parameter).
    2) **custom_slug**: Any custom name you want to give to your Short URL (Optional).
    3) **expire_duration**: Duration in seconds after which the Short URL generated would expire (Optional, by default duration is set to infinite time period).
-Note that the DNS: **http://magic.Link/** will be added to the random short code generated for a given Long URL. Thus, if the Short Code is like this: "ha34", the Short URL would be: `http://magic.Link/ha34`.
+Note that the DNS: `http://magic.Link/` will be added to the random short code generated for a given Long URL. Thus, if the Short Code is like this: "ha34", the Short URL would be: `http://magic.Link/ha34`.
 The above endpoint will return the task_id. Based of this task_id we can check the status of the given job/task from time to time until it gets completed.
 
 **b) GET /{short_code}:** This endpoint enqueues the job of fetching the long_url from the given Short Code. Notice that it accepts the short code as a parameter and not the short url. Thus, if your Short URL is like this: `http://magic.Link/g2hd4` then the short code for this would be "g2hd4". Thus you will specify this short code and not the full short url. This endpoint will also return the task_id. Based of this task_id we can check the status of the given job/task from time to time until it gets completed.
