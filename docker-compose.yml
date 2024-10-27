@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile # Path to your Dockerfile
+    ports:
+      - "8000:8000" # Map host port 8000 to container port 8000
+    depends_on:
+      - redis
+      - memcached
+    environment:
+      REDIS_URL: "redis://redis:6379" # Redis connection URL
+      MEMCACHE_URL: "memcached:11211" # Memcached connection URL
+      CELERY_BROKER_URL: "redis://redis:6379" # Broker URL for Celery
+
+  redis:
+    image: redis:alpine # Use the official Redis image
+    ports:
+      - "6379:6379" # Map host port 6379 to container port 6379
+
+  memcached:
+    image: memcached:alpine # Use the official Memcached image
+    ports:
+      - "11211:11211" # Map host port 11211 to container port 11211
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile # Use the same Dockerfile as FastAPI
+    command: celery -A worker.celery_worker.celery_app worker --loglevel=info --pool=solo
+    depends_on:
+      - redis # Ensure Redis is up before starting Celery
+    environment:
+      CELERY_BROKER_URL: "redis://redis:6379" # Broker URL for Celery
