@@ -6,6 +6,7 @@
    - [Core Requirements](#14-core-requirements)
    - [Additional Functionalities](#15-additional-functionalities)
    - [API Specifications](#16-api-specifications)
+   - [Demo Video](#17-demo-video)
      
 2. [Setting Up the Project on Windows Local System](#2-setting-up-the-project-on-windows-local-system)
    - [Setting up the MongoDB Atlas Database](#21-setting-up-the-mongodb-atlas-database)
@@ -96,6 +97,11 @@ Again, this endpoint returns task_id.
    7) **Completed (204 No Content):** It conveys completion of the job of deleting a specific Long URL to Short Code mapping both in the Memcache and MongoDB database. The record was deleted successfully.
    8) **Completed (400 Bad Request):** It conveys completion of the job of deleting a specific Long URL to Short Code mapping both in the Memcache and MongoDB database. The job failed while executing and deletion was unsuccessful. 
    9) **Completed (404 Not Found):** It conveys completion of the job of deleting a specific Long URL to Short Code mapping both in the Memcache and MongoDB database. No such record to be deleted was found in the database.
+
+---
+
+### 1.7) Demo Video
+Watch the demo video [here](https://drive.google.com/file/d/1K0dwpWNzji4uIHCnEs1O2BrbtmY8ufdq/view?usp=drive_link).
       
 ---
 ---
