@@ -32,8 +32,7 @@ The code for generating random Short Code is present at 'utils/utils.py'. Here, 
 - For a code of length 2, there are 62*62 permutations.
 - For a code of length 5, there are 62^5 permutations.
 
-Thus, our logic is capable of supporting around 930 million URLs.
-Note that the random generator is prone to collision, meaning it can produce the short code that has already been in use for some other Long URL. Thus, we will keep on generating the Short code until we find that such short code that has not been in use till now.
+Thus, our logic is capable of supporting around 930 million URLs. Note that the random generator is prone to collision, meaning it can produce the short code that has already been in use for some other Long URL. Thus, we will keep on generating the Short code until we find that such short code that has not been in use till now.
 
 ---
 
@@ -70,17 +69,22 @@ To prevent abuse, URL shortening requests are limited to a maximum of 10 request
 ### 1.6) API Specifications
 **a) POST /url/shorten:** This endpoint enqueues the job of generating a shortened URL into Redis for Celery to process. It accepts 3 parameters in its body: 
    1) **long_url**: The URL that you want to shorten (Required parameter).
-   2) **custom_slug**: Any custom name you want to give to your Short URL (Optional).
-   3) **expire_duration**: Duration in seconds after which the Short URL generated would expire (Optional, by default duration is set to infinite time period).
+   2) **custom_slug**: Any custom name you want to give to your Short URL (Optional parameter).
+   3) **expire_duration**: Duration in seconds after which the Short URL generated would expire (Optional parameter and by default set to infinite time period).
+
 Note that the DNS: `http://magic.Link/` will be added to the random short code generated for a given Long URL. Thus, if the Short Code is like this: "ha34", the Short URL would be: `http://magic.Link/ha34`.
-The above endpoint will return the task_id. Based of this task_id we can check the status of the given job/task from time to time until it gets completed.
 
-**b) GET /{short_code}:** This endpoint enqueues the job of fetching the long_url from the given Short Code. Notice that it accepts the short code as a parameter and not the short url. Thus, if your Short URL is like this: `http://magic.Link/g2hd4` then the short code for this would be "g2hd4". Thus you will specify this short code and not the full short url. This endpoint will also return the task_id. Based of this task_id we can check the status of the given job/task from time to time until it gets completed.
+The above endpoint will return the task_id. Based of it we can check the status of the given job/task from time to time until it gets completed.
 
-**c) DELETE /:** This endpoint enqueues the job of deleting the mapping of Long URL to the Short URL both from the MongoDB database as well as from the Memcache. It accepts 2 parameters in its body: 
+**b) GET /{short_code}:** This endpoint enqueues the job of fetching the long_url from the given Short Code. Notice that it accepts the short code as a parameter and not the short url. Thus, if your Short URL is like this: `http://magic.Link/g2hd4` then the short code for this would be "g2hd4". Thus you will specify this short code and not the full short url. 
+
+This endpoint will also return the task_id for checking status of the job.
+
+**c) DELETE /:** This endpoint enqueues the job of deleting the mapping of Long URL to the Short URL both from the MongoDB database as well as from the Memcache. It accepts the following 2 parameters in its body and you need to specify any one to delete that specific mapping.
    1) **short_code**: The short code for the given Long URL whose mapping you want to delete.
    2) **long_url**: The given Long URL whose mapping you want to delete.
-You need to specify one out of the 2 to delete that specific mapping. Again, this endpoint returns task_id.
+
+Again, this endpoint returns task_id.
 
 **d) GET /{task_id}:** This endpoint is used to track the status of the given task_id. Based upon the nature of the job corresponding to this task_id, it returns one out of the following responses:
    1) **Pending (200 OK):** It signifies that the given job is still waiting in the Redis queue to get processed.
@@ -89,9 +93,9 @@ You need to specify one out of the 2 to delete that specific mapping. Again, thi
    4) **Completed (302 Temporary Redirect):** It conveys completion of the job of fetching Long URL from Short Code and successfully finds the Long URL corresponding to the given Short Code and redirects to this Long URL.
    5) **Completed (201 Resource Created):** It conveys completion of the job of creating a Short URL from the given Long URL and returns that new Short URL in its response.
    6) **Completed (200 OK):** It conveys completion of the job of creating a Short URL from the given Long URL. But the given Long URL was already present in the record, so instead of creating a new Short URL, it returned that existing Short URL.
-   7) **Completed (204 No Content):** It conveys completion of the job of deleting a mapping of Long URL to Short Code both in the Memcache and MongoDB database. The record was deleted successfully.
-   8) **Completed (400 Bad Request):** It conveys completion of the job of deleting a mapping of Long URL to Short Code both in the Memcache and MongoDB database. The job failed while executing and deletion was unsuccessful. 
-   9) **Completed (404 Not Found):** It conveys completion of the job of deleting a mapping of Long URL to Short Code both in the Memcache and MongoDB database. No such record to be deleted was found in the database.
+   7) **Completed (204 No Content):** It conveys completion of the job of deleting a specific Long URL to Short Code mapping both in the Memcache and MongoDB database. The record was deleted successfully.
+   8) **Completed (400 Bad Request):** It conveys completion of the job of deleting a specific Long URL to Short Code mapping both in the Memcache and MongoDB database. The job failed while executing and deletion was unsuccessful. 
+   9) **Completed (404 Not Found):** It conveys completion of the job of deleting a specific Long URL to Short Code mapping both in the Memcache and MongoDB database. No such record to be deleted was found in the database.
       
 ---
 ---
