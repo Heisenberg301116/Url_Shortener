@@ -135,7 +135,9 @@ Again, this endpoint returns task_id.
 ---
 
 ### 3.2) Starting the Celery Worker
-1. Open CMD in the root directory and run: `celery -A worker.celery_worker.celery_app worker --loglevel=info --pool=solo`
+1. Open CMD in the root directory of the project.
+2. Activate the virtual environment with command: `myvenv\Scripts\activate`
+3. Run: `celery -A worker.celery_worker.celery_app worker --loglevel=info --pool=solo`
 
 ---
 
