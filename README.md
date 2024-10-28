@@ -17,6 +17,8 @@
    - [Starting the Celery Worker](#32-starting-the-celery-worker)
    - [Running the Main FastAPI Application](#33-running-the-main-fastapi-application)
 
+4. [Running the Project over Docker](#4-running-the-project-over-docker)
+
 ---
 ---
 
@@ -119,7 +121,7 @@ Watch the demo video [here](https://drive.google.com/file/d/1K0dwpWNzji4uIHCnEs1
 
 ---
 
-### 2.2) Setting up the Virtual Environment
+### 2.2) Setting up the Virtual Environment (Skip if you want to run the project over Docker)
 1. Open CMD and navigate to the project directory.
 2. Create a virtual environment by running: `python -m venv myvenv`
 3. Activate the virtual environment with: `myvenv\Scripts\activate`
@@ -151,4 +153,13 @@ Watch the demo video [here](https://drive.google.com/file/d/1K0dwpWNzji4uIHCnEs1
 1. Open CMD in the root directory.
 2. Activate the virtual environment with: `myvenv\Scripts\activate`
 3. Start the application with: `uvicorn main:app --reload --workers 4`
-4. Open `http://127.0.0.1:8000/docs` to access/view the endpoints.
+4. Open `http://127.0.0.1:8000/docs` in the browser to access/view the endpoints.
+
+---
+---
+
+## 4) Running the Project over Docker
+1. Make sure you complete the setup of setting .env file specified in **2.1) section**
+2. Open Docker Desktop App to start Docker services.
+3. Open CMD in the root directory of the project and run the following command: `docker-compose up --build`
+4. Open `http://127.0.0.1:8000/docs` in the browser to access/view the endpoints.
