@@ -159,7 +159,7 @@ Watch the demo video [here](https://drive.google.com/file/d/1K0dwpWNzji4uIHCnEs1
 ---
 
 ## 4) Running the Project over Docker
-1. Make sure you complete the setup of setting .env file specified in [2.1) section]((#21-setting-up-the-mongodb-atlas-database)
+1. Make sure you complete the setup of setting .env file specified in [2.1) section](#21-setting-up-the-mongodb-atlas-database)
 2. Open Docker Desktop App to start Docker services.
 3. Open CMD in the root directory of the project and run the following command: `docker-compose up --build`
 4. Open `http://127.0.0.1:8000/docs` in the browser to access/view the endpoints.
