@@ -107,8 +107,8 @@ Again, this endpoint returns task_id.
 1. Clone this repository to your local system.
 2. Create a cluster in MongoDB Atlas and note the username, password, and connection string.
 3. Create a `.env` file in the root directory of this cloned project, with the following:
-   MONGODB_USERNAME=`Your username`
-   MONGODB_PASSWORD=`Your password`
+      - MONGODB_USERNAME=`Your username`
+      - MONGODB_PASSWORD=`Your password`
 5. Set the `uri` variable in './config/database.py' to the connection string of your cluster.
 
 ---
