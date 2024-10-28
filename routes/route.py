@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from celery.result import AsyncResult
 from schema.schema import UrlMappingSchema
 from schema.schema import DeleteUrlRequest
@@ -78,8 +78,9 @@ async def get_task_result(task_id: str):
                 return JSONResponse(content={"task_id": task_id, "status": "Completed", "result": "URL not found !"}, status_code=404)
                 
             else:
-                return RedirectResponse(url=response['long_url'], status_code=302)
-        
+                # return RedirectResponse(url=response['long_url'], status_code=302)
+                response = RedirectResponse(url=response['long_url'], status_code=302)
+                return response
         
         
         elif response['type'] == "short_url":
@@ -92,7 +93,7 @@ async def get_task_result(task_id: str):
         
         elif response['type'] == "delete_url":
             if response['message'] == "Success":
-                return JSONResponse(content={"task_id": task_id, "status": "Completed", "result": "Successfully deleted !"}, status_code=204)               
+                return Response(status_code=204)             
             
             elif response['message'] == "Failed":
                 return JSONResponse(content={"task_id": task_id, "status": "Completed", "result": "Failed to delete !"},status_code=400)

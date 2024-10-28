@@ -144,5 +144,5 @@ Again, this endpoint returns task_id.
 ### 3.3) Running the Main FastAPI Application
 1. Open CMD in the root directory.
 2. Activate the virtual environment with: `myvenv\Scripts\activate`
-3. Start the application with: `uvicorn main:app --reload --workers 4`.
+3. Start the application with: `uvicorn main:app --reload --workers 4`
 4. Open `http://127.0.0.1:8000/docs` to access/view the endpoints.

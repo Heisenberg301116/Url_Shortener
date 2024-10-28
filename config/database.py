@@ -19,10 +19,10 @@ uri = f"mongodb+srv://{uname}:{pwd}@cluster0.16ztv.mongodb.net/?retryWrites=true
 client = MongoClient(uri)
 
 # Access or create a database within the MongoDB server
-db = client.url_short_db
+db = client.URL_Mapping
 
 # Access or create a collection within the db database
-collection_name = db["url_short_collection"]
+collection_name = db["Collection_0"]
 
 
 # # Send a ping to confirm a successful connection
