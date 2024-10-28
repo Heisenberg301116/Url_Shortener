@@ -6,31 +6,53 @@ services:
       context: .
       dockerfile: Dockerfile # Path to your Dockerfile
     ports:
-      - "8000:8000" # Map host port 8000 to container port 8000
+      - "8000:8000" # Map host's (your system) port 8000 to container port 8000
     depends_on:
       - redis
       - memcached
+      - celery
     environment:
-      REDIS_URL: "redis://redis:6379" # Redis connection URL
-      MEMCACHE_URL: "memcached:11211" # Memcached connection URL
-      CELERY_BROKER_URL: "redis://redis:6379" # Broker URL for Celery
+      REDIS_URL: "redis://redis-server:6379/0"
+      MEMCACHE_HOST: "memcache-server"
+      MEMCACHE_PORT: 11211
+      CELERY_BROKER_URL: "redis://redis-server:6379/0"
+      CELERY_RESULT_BACKEND: "redis://redis-server:6379/0"
+    networks:
+      - backend
 
   redis:
-    image: redis:alpine # Use the official Redis image
+    image: redis:alpine
+    container_name: redis-server
     ports:
-      - "6379:6379" # Map host port 6379 to container port 6379
+      - "6379:6379"
+    networks:
+      - backend
 
   memcached:
-    image: memcached:alpine # Use the official Memcached image
+    image: memcached:alpine
+    container_name: memcache-server
     ports:
-      - "11211:11211" # Map host port 11211 to container port 11211
+      - "11211:11211"
+    networks:
+      - backend
 
   celery:
     build:
       context: .
-      dockerfile: Dockerfile # Use the same Dockerfile as FastAPI
-    command: celery -A worker.celery_worker.celery_app worker --loglevel=info --pool=solo
+      dockerfile: Dockerfile
+    container_name: celery-worker
     depends_on:
-      - redis # Ensure Redis is up before starting Celery
+      - redis
+      - memcached
     environment:
-      CELERY_BROKER_URL: "redis://redis:6379" # Broker URL for Celery
+      MEMCACHE_HOST: "memcache-server"
+      MEMCACHE_PORT: 11211
+      CELERY_BROKER_URL: "redis://redis-server:6379/0"
+      CELERY_RESULT_BACKEND: "redis://redis-server:6379/0"
+    command: celery -A worker.celery_worker.celery_app worker --loglevel=info --pool=solo
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge # Use the default network driver for the backend network

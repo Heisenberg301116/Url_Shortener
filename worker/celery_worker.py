@@ -1,3 +1,4 @@
+import os
 from config.database import collection_name
 from models.models import UrlMappingModel
 from config.cache import cached_obj as cache
@@ -8,8 +9,12 @@ import re
 # Configure the Celery application
 celery_app = Celery(
     'my_fastapi_app',
-    broker='redis://localhost:6379/0',  # receive tasks
-    backend='redis://localhost:6379/0'      # storing result
+    
+    # broker='redis://localhost:6379/0',  # receive tasks
+    # backend='redis://localhost:6379/0'  # storing result
+    
+    broker = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0"),
+    backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
 )
 
 

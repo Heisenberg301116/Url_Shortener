@@ -1,5 +1,6 @@
 from redis import Redis
 import time
+import os
 
 # Rate limit settings
 RATE_LIMIT = 10  # max requests
@@ -8,7 +9,11 @@ EXPIRY_TIME = 3600  # expiry time for user data in redis
 
 
 # Connect to Redis
-redis_client = Redis(host='localhost', port=6379, db=0)
+# redis_client = Redis(host='localhost', port=6379, db=0)
+redis_url = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
+redis_client = Redis.from_url(redis_url)
+
+
 
 
 def is_rate_limited(user_id: str) -> bool:    
